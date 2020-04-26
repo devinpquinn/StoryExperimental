@@ -1,0 +1,6 @@
+This is placeholder text.
+[question=0]Are you ready for a placeholder question?
+[choice]This is a placeholder choice.
+[choice]This is another placeholder choice.
+[choice]A third placeholder choice.
+I guess this happens after the choice?
