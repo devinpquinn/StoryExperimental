@@ -3,4 +3,4 @@ This is placeholder text.
 [choice]This is a placeholder choice.
 [choice]This is another placeholder choice.
 [choice]A third placeholder choice.
-I guess this happens after the choice?
+You chose ChoiceDependent.

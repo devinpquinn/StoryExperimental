@@ -14,7 +14,8 @@ using RPGTALK.Snippets;
 
 
 [AddComponentMenu("Seize Studios/RPGTalk/RPGTalk")]
-public class RPGTalk : MonoBehaviour {
+public class RPGTalk : MonoBehaviour
+{
 
     /// <summary>
     /// Should the talk be initiated when the script starts?
@@ -84,7 +85,7 @@ public class RPGTalk : MonoBehaviour {
     /// <summary>
     /// The text file that contains all the talks to be parsed.
     /// </summary>
-    public TextAsset txtToParse;    
+    public TextAsset txtToParse;
 
     /// <summary>
     /// If the player hits the intercation button, should the text be skipped to the end?
@@ -338,7 +339,8 @@ public class RPGTalk : MonoBehaviour {
 
 
 
-    void Start(){
+    void Start()
+    {
         //Get the TMP_Translate Object
         textUI = new TMP_Translator(textUIObj);
         if (dialogerObj != null)
@@ -348,21 +350,45 @@ public class RPGTalk : MonoBehaviour {
 
 
         //If it is set to start on awake, start it! If not, make sure that we hide anything that shouldn't be there
-        if (startOnAwake) {
-            NewTalk ();
-        } else {
-            foreach (GameObject GO in showWithDialog) {
-                GO.SetActive (false);
+        if (startOnAwake)
+        {
+            NewTalk();
+        }
+        else
+        {
+            foreach (GameObject GO in showWithDialog)
+            {
+                GO.SetActive(false);
             }
         }
 
         saveInstance = GetComponent<RPGTalkSaveInstance>();
     }
 
+    public void VariableReplace(string oldValue, string newValue)
+    {
+        string myLine;
+
+        for(int i = 0; i < rpgtalkElements.Count; i++)
+        {
+            myLine = rpgtalkElements[i].dialogText;
+            for (int j = 0; j < variables.Length; j++)
+            {
+                if (myLine.Contains(oldValue))
+                {
+                    myLine = myLine.Replace(oldValue, newValue);
+                }
+            }
+            rpgtalkElements[i].dialogText = myLine;
+        }
+    }
+    
     //Change txtToParse to be the correct for other language
-    TextAsset CheckCurrentLanguage(){
-        if (RPGTalkLocalization.singleton != null) {
-            return RPGTalkLocalization.singleton.CheckForCorrectLanguage (txtToParse);
+    TextAsset CheckCurrentLanguage()
+    {
+        if (RPGTalkLocalization.singleton != null)
+        {
+            return RPGTalkLocalization.singleton.CheckForCorrectLanguage(txtToParse);
         }
         return txtToParse;
     }
@@ -387,10 +413,11 @@ public class RPGTalk : MonoBehaviour {
     /// </summary>
     /// <param name="_lineToStart">Line to start reading the text.</param>
     /// <param name="_lineToBreak">Line to stop reading the text.</param>
-    public void NewTalk(string _lineToStart,string _lineToBreak){
+    public void NewTalk(string _lineToStart, string _lineToBreak)
+    {
         lineToStart = _lineToStart;
         lineToBreak = _lineToBreak;
-        NewTalk ();
+        NewTalk();
     }
 
     /// <summary>
@@ -399,11 +426,12 @@ public class RPGTalk : MonoBehaviour {
     /// <param name="_lineToStart">Line to start reading the text.</param>
     /// <param name="_lineToBreak">Line to stop reading the text.</param>
     /// <param name="_txtToParse">Text to read from</param>
-    public void NewTalk(string _lineToStart,string _lineToBreak,TextAsset _txtToParse){
+    public void NewTalk(string _lineToStart, string _lineToBreak, TextAsset _txtToParse)
+    {
         lineToStart = _lineToStart;
         lineToBreak = _lineToBreak;
         txtToParse = _txtToParse;
-        NewTalk ();
+        NewTalk();
     }
 
     /// <summary>
@@ -413,29 +441,33 @@ public class RPGTalk : MonoBehaviour {
     /// <param name="_lineToBreak">Line to stop reading the text.</param>
     /// <param name="_txtToParse">Text to read from</param>
     /// <param name="_callback">Events to be called when the talk ends</param>
-    public void NewTalk(string _lineToStart,string _lineToBreak,TextAsset _txtToParse, UnityEvent _callback){
+    public void NewTalk(string _lineToStart, string _lineToBreak, TextAsset _txtToParse, UnityEvent _callback)
+    {
         lineToStart = _lineToStart;
         lineToBreak = _lineToBreak;
         txtToParse = _txtToParse;
         callback = _callback;
-        NewTalk ();
+        NewTalk();
     }
 
     /// <summary>
     /// Starts a new Talk.
     /// </summary>
-    public void NewTalk(){
+    public void NewTalk()
+    {
         //call the event
-        if(OnNewTalk != null){
-            OnNewTalk ();
+        if (OnNewTalk != null)
+        {
+            OnNewTalk();
         }
 
         //Check if we are using the right txtToParse based on the language
-        TextAsset internalTxtToParse = CheckCurrentLanguage ();
+        TextAsset internalTxtToParse = CheckCurrentLanguage();
 
         //check if we have the dubsounds component on
-        if (dubSounds == null) {
-            dubSounds = GetComponent<RPGTalkDubSounds> ();
+        if (dubSounds == null)
+        {
+            dubSounds = GetComponent<RPGTalkDubSounds>();
         }
 
 
@@ -449,21 +481,30 @@ public class RPGTalk : MonoBehaviour {
 
         //reduce one for the line to Start and break, if they were ints
         //return the default lines to -2 if they were not ints
-        if (int.TryParse (lineToStart, out actualLineToStart)) {
+        if (int.TryParse(lineToStart, out actualLineToStart))
+        {
             actualLineToStart -= 1;
-        } else {
+        }
+        else
+        {
             actualLineToStart = -2;
         }
-        if (int.TryParse (lineToBreak, out actualLineToBreak)) {
-            if (lineToBreak != "-1") {
+        if (int.TryParse(lineToBreak, out actualLineToBreak))
+        {
+            if (lineToBreak != "-1")
+            {
                 actualLineToBreak -= 1;
             }
-        } else {
+        }
+        else
+        {
             actualLineToBreak = -2;
         }
 
-        if (textAudio != null) {
-            if (rpgAudioSorce == null) {
+        if (textAudio != null)
+        {
+            if (rpgAudioSorce == null)
+            {
                 CreateAudioSource();
             }
         }
@@ -479,14 +520,14 @@ public class RPGTalk : MonoBehaviour {
         rpgtalkElements = new List<RpgtalkElement>();
 
         //Resets the Rich Texts list
-        richText = new List<RPGTalkRichText> ();
+        richText = new List<RPGTalkRichText>();
 
         //If there was any unclosed tags... Reset it
         unclosedTags = new List<string>();
 
         //if there was any sprites used... reset it
         spritesUsed = new List<RPGTalkSprite>();
-        CleanDirtySprites ();
+        CleanDirtySprites();
 
         //if there was any speeds used... reset it
         speeds = new List<RPGTalkSpeed>();
@@ -508,9 +549,9 @@ public class RPGTalk : MonoBehaviour {
 
 
         //resets any text that might have been left from previous talks
-        if(textUI == null)
+        if (textUI == null)
         {
-            if(textUIObj == null)
+            if (textUIObj == null)
             {
                 Debug.LogError("You need to set an UI Element to be the text!");
             }
@@ -520,43 +561,54 @@ public class RPGTalk : MonoBehaviour {
             }
         }
         textUI.ChangeTextTo("");
-        
-        
-        if(internalTxtToParse != null) {
+
+
+        if (internalTxtToParse != null)
+        {
             // read the TXT file into the elements list
-            StringReader reader = new StringReader (internalTxtToParse.text);
-            
-            string line = reader.ReadLine(); 
+            StringReader reader = new StringReader(internalTxtToParse.text);
+
+            string line = reader.ReadLine();
             int currentLine = 0;
 
-            if(line == null)
+            if (line == null)
             {
                 Debug.LogError("There was an error reading your file! Check your encoding settings.");
                 EndTalk();
                 return;
             }
 
-            while (line != null) {
+            while (line != null)
+            {
                 //if the lineToStart or lineToBreak were strings, find out what line they actually were
-                if (actualLineToStart == -2) {
-                    if (line.IndexOf("[title="+lineToStart+"]") != -1) {
-                        actualLineToStart = currentLine+1;
-                    } else {
+                if (actualLineToStart == -2)
+                {
+                    if (line.IndexOf("[title=" + lineToStart + "]") != -1)
+                    {
+                        actualLineToStart = currentLine + 1;
+                    }
+                    else
+                    {
                         line = reader.ReadLine();
                         currentLine++;
                         continue;
                     }
                 }
-                if (actualLineToBreak == -2) {
-                    if (line.IndexOf("[title="+lineToBreak+"]") != -1) {
-                        actualLineToBreak = currentLine-1;
+                if (actualLineToBreak == -2)
+                {
+                    if (line.IndexOf("[title=" + lineToBreak + "]") != -1)
+                    {
+                        actualLineToBreak = currentLine - 1;
                     }
                 }
-                
-                if (currentLine >= actualLineToStart) {
-                    if (actualLineToBreak < 0 || currentLine <= actualLineToBreak) {
+
+                if (currentLine >= actualLineToStart)
+                {
+                    if (actualLineToBreak < 0 || currentLine <= actualLineToBreak)
+                    {
                         //If this line was a choice, we don't want to keep track of it
-                        if (LookForChoices (line)) {
+                        if (LookForChoices(line))
+                        {
                             line = reader.ReadLine();
                             currentLine++;
                             continue;
@@ -569,28 +621,35 @@ public class RPGTalk : MonoBehaviour {
                             continue;
                         }
 
-                        if (wordWrap) {
-                            CheckIfTheTextFits (line);
-                        } else {
-                            rpgtalkElements.Add (readSceneElement (line));
+                        if (wordWrap)
+                        {
+                            CheckIfTheTextFits(line);
                         }
-                    } else {
+                        else
+                        {
+                            rpgtalkElements.Add(readSceneElement(line));
+                        }
+                    }
+                    else
+                    {
                         break;
                     }
                 }
-                
+
                 line = reader.ReadLine();
                 currentLine++;
             }
-                
-            if(rpgtalkElements.Count == 0){
-                Debug.LogError ("The Line To Start and the Line To Break are not fit for the given TXT");
+
+            if (rpgtalkElements.Count == 0)
+            {
+                Debug.LogError("The Line To Start and the Line To Break are not fit for the given TXT");
                 return;
             }
 
             //After reading all the elements in the talk, let's check if the text should be ready to fit some sprites
-            if (textUIObj.GetComponent<ITextWithIcon> () != null) {
-                textUIObj.GetComponent<ITextWithIcon> ().RepopulateImages ();
+            if (textUIObj.GetComponent<ITextWithIcon>() != null)
+            {
+                textUIObj.GetComponent<ITextWithIcon>().RepopulateImages();
             }
 
         }
@@ -599,31 +658,40 @@ public class RPGTalk : MonoBehaviour {
 
         //show what need to be shown
         textUI.Enabled(true);
-        if (dialoger) {
-            if (dialogerObj) {
+        if (dialoger)
+        {
+            if (dialogerObj)
+            {
                 dialogerUI.Enabled(true);
             }
 
         }
-        for (int i = 0; i < showWithDialog.Length; i++) {
+        for (int i = 0; i < showWithDialog.Length; i++)
+        {
             showWithDialog[i].SetActive(true);
         }
 
         //Set the speaker name and photo
-        if (dialoger) {
-            if (dialogerObj) {
-                dialogerUI.ChangeTextTo(rpgtalkElements [0].speakerName);
+        if (dialoger)
+        {
+            if (dialogerObj)
+            {
+                dialogerUI.ChangeTextTo(rpgtalkElements[0].speakerName);
             }
-            if (shouldUsePhotos) {
-                for (int i = 0; i < characters.Length; i++) {
+            if (shouldUsePhotos)
+            {
+                for (int i = 0; i < characters.Length; i++)
+                {
                     //If we fond the character that is talking
-                    if (characters[i].character.dialoger == rpgtalkElements [0].originalSpeakerName) {
+                    if (characters[i].character.dialoger == rpgtalkElements[0].originalSpeakerName)
+                    {
                         //Change its photo
-                        if (UIPhoto) {
-                            UIPhoto.sprite = characters [i].character.photo;
+                        if (UIPhoto)
+                        {
+                            UIPhoto.sprite = characters[i].character.photo;
                         }
                         //Change its animator
-                        if(characters[i].animatorOverwrite != null)
+                        if (characters[i].animatorOverwrite != null)
                         {
                             actualAnimator = characters[i].animatorOverwrite;
                         }
@@ -632,8 +700,9 @@ public class RPGTalk : MonoBehaviour {
                             actualAnimator = animatorWhenTalking;
                         }
                         //animate it
-                        if (actualAnimator && animatorIntName != ""){
-                            actualAnimator.SetInteger (animatorIntName, i);
+                        if (actualAnimator && animatorIntName != "")
+                        {
+                            actualAnimator.SetInteger(animatorIntName, i);
                         }
                         break;
                     }
@@ -642,9 +711,7 @@ public class RPGTalk : MonoBehaviour {
         }
 
         //Check if and who the elements should follow
-        CheckWhoToFollow (rpgtalkElements [0]);
-
-
+        CheckWhoToFollow(rpgtalkElements[0]);
 
         //check if there should be any dubs in this line
         CheckDubsInThisLine();
@@ -664,49 +731,53 @@ public class RPGTalk : MonoBehaviour {
 
     #endregion
 
-    private RpgtalkElement readSceneElement(string line) {
-        
+    private RpgtalkElement readSceneElement(string line)
+    {
         RpgtalkElement newElement = new RpgtalkElement();
 
-        newElement.originalSpeakerName = line;
-
         //replace any variable that may exist on the text
-        for (int i = 0; i < variables.Length; i++) {
-            if (line.Contains (variables[i].variableName)) {
-                line = line.Replace (variables[i].variableName, variables[i].variableValue);
+        for (int i = 0; i < variables.Length; i++)
+        {
+            if (line.Contains(variables[i].variableName))
+            {
+                line = line.Replace(variables[i].variableName, variables[i].variableValue);
             }
         }
 
+        newElement.originalSpeakerName = line;
+
         //If we want to show the dialoger's name, slipt the line at the ':'
-        if (dialoger) {
+        if (dialoger)
+        {
 
-            if (line.IndexOf (':') != -1) {
+            if (line.IndexOf(':') != -1)
+            {
 
-                string[] splitLine = line.Split (new char[] { ':' }, 2);
+                string[] splitLine = line.Split(new char[] { ':' }, 2);
 
-                newElement.speakerName = splitLine [0].Trim ();
+                newElement.speakerName = splitLine[0].Trim();
 
                 //newElement.dialogText = LookForRichTexts(splitLine [1].Trim ());
-                line = splitLine [1].Trim ();
+                line = splitLine[1].Trim();
 
-                string[] originalSplitLine = newElement.originalSpeakerName.Split (new char[] { ':' },2);
+                string[] originalSplitLine = newElement.originalSpeakerName.Split(new char[] { ':' }, 2);
 
-                newElement.originalSpeakerName = originalSplitLine [0].Trim ();
+                newElement.originalSpeakerName = originalSplitLine[0].Trim();
 
             }
-        } 
+        }
 
         //Check for any question that should come along with the text
         line = LookForQuestions(line);
 
         //Check for any dubs that should come along with the text
-        line = LookForDubs (line);
+        line = LookForDubs(line);
 
         //Check for any speed changes that should be on the text
         line = LookForSpeed(line);
 
         //Check for any sprites that should be on the text
-        line = LookForSprites (line);
+        line = LookForSprites(line);
 
         //Check for any expressions to play with the text
         newElement.expression = LookForExpression(line);
@@ -725,37 +796,41 @@ public class RPGTalk : MonoBehaviour {
 
 
 
-        
+
         return newElement;
-        
+
     }
 
     #region sprites
 
-    private void CheckTextUIScript(){
+    private void CheckTextUIScript()
+    {
         //If we are using sprites inside the text, the regular Text script need to be changed.
-        if (textUIObj.GetComponent<ITextWithIcon> () == null && textUI.hasUIText) {
+        if (textUIObj.GetComponent<ITextWithIcon>() == null && textUI.hasUIText)
+        {
             //Lets create a copy of the Text that the user created
-            GameObject tempGO = new GameObject ();
+            GameObject tempGO = new GameObject();
             ITextWithIcon newText = textUI.AddTextWithIconComponent(tempGO);
-            RPGTalkHelper.CopyTextParameters (textUI.GetTextObject(), newText as Object);
+            RPGTalkHelper.CopyTextParameters(textUI.GetTextObject(), newText as Object);
 
             //now remove the previous one
             DestroyImmediate(textUI.GetTextObject());
 
             //finally, add the new text to the ancient Game Object
             textUI.AddTextWithIconComponent(textUIObj);
-            textUI = new TMP_Translator( textUIObj);
-            textUIObj.GetComponent<ITextWithIcon> ().rpgtalk = this;
-            RPGTalkHelper.CopyTextParameters (newText as Object, textUI.GetTextObject());
+            textUI = new TMP_Translator(textUIObj);
+            textUIObj.GetComponent<ITextWithIcon>().rpgtalk = this;
+            RPGTalkHelper.CopyTextParameters(newText as Object, textUI.GetTextObject());
 
-            Destroy (tempGO);
+            Destroy(tempGO);
         }
     }
 
-    private string LookForSprites(string line){
+    private string LookForSprites(string line)
+    {
         //check if the user have some sprites and the line asks for one
-        if (sprites.Count > 0 && line.IndexOf("[sprite=")!=-1 && line.IndexOf("]",line.IndexOf("[sprite="))!= -1) {
+        if (sprites.Count > 0 && line.IndexOf("[sprite=") != -1 && line.IndexOf("]", line.IndexOf("[sprite=")) != -1)
+        {
             bool thereAreSpritesLeft = true;
 
             //There is at least one sprite in this line! Let's check if our UI uses the correct script
@@ -763,31 +838,39 @@ public class RPGTalk : MonoBehaviour {
 
 
             //repeat as long as we find a sprite
-            while (thereAreSpritesLeft) {
-                int initialBracket = line.IndexOf ("[sprite=");
+            while (thereAreSpritesLeft)
+            {
+                int initialBracket = line.IndexOf("[sprite=");
                 int finalBracket = -1;
-                if (initialBracket != -1) {
-                    finalBracket = line.IndexOf ("]", initialBracket);
+                if (initialBracket != -1)
+                {
+                    finalBracket = line.IndexOf("]", initialBracket);
                 }
 
                 //There still are any '[sprite=' and it is before a ']'?
-                if (initialBracket < finalBracket) {
+                if (initialBracket < finalBracket)
+                {
                     //Ok, new sprite around! Let's get its number
                     int spriteNum = -1;
                     //Check if the number was a valid int
-                    if (int.TryParse (line.Substring (initialBracket + 8, finalBracket - (initialBracket + 8)), out spriteNum) &&
-                        sprites.Count > spriteNum) {
+                    if (int.TryParse(line.Substring(initialBracket + 8, finalBracket - (initialBracket + 8)), out spriteNum) &&
+                        sprites.Count > spriteNum)
+                    {
 
                         //Change the line differently if we have TMP
                         line = textUI.GetCorrectSpriteLine(line, ref sprites, ref spritesUsed, spriteNum, initialBracket, finalBracket, rpgtalkElements.Count, tmpSpriteAtlas);
 
 
-                    } else {
-                        Debug.LogWarning ("Found a [sprite=x] variable in the text but something is wrong with it. Check The spelling and check if the number used exists in the 'Sprites' section");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Found a [sprite=x] variable in the text but something is wrong with it. Check The spelling and check if the number used exists in the 'Sprites' section");
                         thereAreSpritesLeft = false;
                     }
 
-                } else {
+                }
+                else
+                {
                     thereAreSpritesLeft = false;
                 }
             }
@@ -833,46 +916,56 @@ public class RPGTalk : MonoBehaviour {
 
     #region dubs
 
-    private string LookForDubs(string line){
+    private string LookForDubs(string line)
+    {
         //check if the user have some dubs and the line asks for one
-        if (line.IndexOf("[dub=")!=-1 && line.IndexOf("]",line.IndexOf("[dub="))!= -1) {
-            
+        if (line.IndexOf("[dub=") != -1 && line.IndexOf("]", line.IndexOf("[dub=")) != -1)
+        {
+
             bool thereAreDubsLeft = true;
 
             //repeat as long as we find a dub
-            while (thereAreDubsLeft) {
-                int initialBracket = line.IndexOf ("[dub=");
+            while (thereAreDubsLeft)
+            {
+                int initialBracket = line.IndexOf("[dub=");
                 int finalBracket = -1;
-                if (initialBracket != -1) {
-                    finalBracket = line.IndexOf ("]", initialBracket);
+                if (initialBracket != -1)
+                {
+                    finalBracket = line.IndexOf("]", initialBracket);
                 }
 
                 //There still are any '[dub=' and it is before a ']'?
-                if (initialBracket < finalBracket) {
+                if (initialBracket < finalBracket)
+                {
                     //Ok, new dub around! Let's get its number
                     int dubNum = -1;
                     //Check if the number was a valid int
-                    if (int.TryParse (line.Substring (initialBracket + 5, finalBracket - (initialBracket + 5)), out dubNum)) {
+                    if (int.TryParse(line.Substring(initialBracket + 5, finalBracket - (initialBracket + 5)), out dubNum))
+                    {
                         //Neat, we definely have a dub with a valid number. Time to keep track of it
                         RPGTalkDub newDub = new RPGTalkDub();
                         newDub.dubNumber = dubNum;
                         //Make sure that the the sprite only work for that next line to be added to RpgTalkElements
                         newDub.lineWithDub = rpgtalkElements.Count;
 
-                        dubs.Add (newDub);
+                        dubs.Add(newDub);
 
                         //Looking good! We found out that a dub should be there and we are already keeping track of it
                         //But now we should remove the [dub=X] from the line.
-                        line = line.Substring(0,initialBracket) +
-                            line.Substring(finalBracket+1);
+                        line = line.Substring(0, initialBracket) +
+                            line.Substring(finalBracket + 1);
 
 
-                    } else {
-                        Debug.LogWarning ("Found a [dub=x] variable in the text but something is wrong with it. Check The spelling");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Found a [dub=x] variable in the text but something is wrong with it. Check The spelling");
                         thereAreDubsLeft = false;
                     }
 
-                } else {
+                }
+                else
+                {
                     thereAreDubsLeft = false;
                 }
             }
@@ -901,50 +994,69 @@ public class RPGTalk : MonoBehaviour {
 
     #region questions
 
-    private string LookForQuestions(string line){
+    private string LookForQuestions(string line)
+    {
         //check if the user have some question and the line asks for one
-        if (line.IndexOf("[question=")!=-1 && line.IndexOf("]",line.IndexOf("[question="))!= -1) {
-            int initialBracket = line.IndexOf ("[question=");
-            int finalBracket = line.IndexOf ("]", initialBracket);
+        if (line.IndexOf("[question=") != -1 && line.IndexOf("]", line.IndexOf("[question=")) != -1)
+        {
+            int initialBracket = line.IndexOf("[question=");
+            int finalBracket = line.IndexOf("]", initialBracket);
 
             //Ok, new question around! Let's get its id
             string questionID = line.Substring(initialBracket + 10, finalBracket - (initialBracket + 10));
-            if (questionID.Length > 0) {
+            if (questionID.Length > 0)
+            {
                 //Neat, we definely have a question with a valid number. Time to keep track of it
                 RPGTalkQuestion newQuestion = new RPGTalkQuestion();
                 newQuestion.questionID = questionID;
                 newQuestion.lineWithQuestion = rpgtalkElements.Count;
 
-                questions.Add (newQuestion);
+                questions.Add(newQuestion);
 
                 //Looking good! We found out that a question should be there and we are already keeping track of it
                 //But now we should remove the [question=X] from the line.
-                line = line.Substring(0,initialBracket) +
-                    line.Substring(finalBracket+1);
+                line = line.Substring(0, initialBracket) +
+                    line.Substring(finalBracket + 1);
 
 
-            } else {
-                Debug.LogWarning ("Found a [question=x] variable in the text but something is wrong with it. Check The spelling");
+            }
+            else
+            {
+                Debug.LogWarning("Found a [question=x] variable in the text but something is wrong with it. Check The spelling");
             }
         }
 
         return line;
     }
 
-    public bool LookForChoices(string line){
+    public bool LookForChoices(string line)
+    {
         //check if the user have some choice and the line asks for one
-        if (line.IndexOf("[choice]")!=-1) {
-            int initialBracket = line.IndexOf ("[choice]");
+        if (line.IndexOf("[choice]") != -1)
+        {
+            int initialBracket = line.IndexOf("[choice]");
 
             //Ok! Let's isolate its string
-            line = line.Substring(initialBracket+8);
+            line = line.Substring(initialBracket + 8);
+
+            //Stuff added by Devin Quinn
+            for (int i = 0; i < variables.Length; i++)
+            {
+                if (line.Contains(variables[i].variableName))
+                {
+                    line = line.Replace(variables[i].variableName, variables[i].variableValue);
+                }
+            }
 
             //Add it to the last question found
-            if (questions.Count > 0) {
-                questions [questions.Count - 1].choices.Add (line);
+            if (questions.Count > 0)
+            {
+                questions[questions.Count - 1].choices.Add(line);
                 return true;
-            } else {
-                Debug.LogWarning ("Found a [choice] in the text but there was no [question=x] in a line before it");
+            }
+            else
+            {
+                Debug.LogWarning("Found a [choice] in the text but there was no [question=x] in a line before it");
             }
         }
 
@@ -955,9 +1067,11 @@ public class RPGTalk : MonoBehaviour {
 
     #region speed
 
-    private string LookForSpeed(string line){
+    private string LookForSpeed(string line)
+    {
         //check if the user have some speed changes and the line asks for one
-        if ((line.IndexOf("[speed=")!=-1 && line.IndexOf("]",line.IndexOf("[speed="))!= -1) || line.IndexOf ("[/speed]") != -1) {
+        if ((line.IndexOf("[speed=") != -1 && line.IndexOf("]", line.IndexOf("[speed=")) != -1) || line.IndexOf("[/speed]") != -1)
+        {
             bool thereAreSpeedsLeft = true;
 
             //There is at least one sprite in this line! Let's check if our UI uses the correct script
@@ -965,60 +1079,70 @@ public class RPGTalk : MonoBehaviour {
 
 
             //repeat as long as we find a sprite
-            while (thereAreSpeedsLeft) {
-                int initialBracket = line.IndexOf ("[speed=");
-                int closingBracket = line.IndexOf ("[/speed]");
+            while (thereAreSpeedsLeft)
+            {
+                int initialBracket = line.IndexOf("[speed=");
+                int closingBracket = line.IndexOf("[/speed]");
                 int finalBracket = -1;
-                if (initialBracket != -1) {
-                    finalBracket = line.IndexOf ("]", initialBracket);
+                if (initialBracket != -1)
+                {
+                    finalBracket = line.IndexOf("]", initialBracket);
                 }
 
                 //There still are any '[speed=' and it is before a ']'? 
-                if (initialBracket < finalBracket || closingBracket != -1) {
+                if (initialBracket < finalBracket || closingBracket != -1)
+                {
                     //Ok, new speed chang around! Let's get its number
                     int speedNum = 0;
 
                     //it was a opening [speed=
-                    if (closingBracket == -1 || (initialBracket < closingBracket && initialBracket != -1 && finalBracket != -1 && initialBracket < finalBracket)) {
+                    if (closingBracket == -1 || (initialBracket < closingBracket && initialBracket != -1 && finalBracket != -1 && initialBracket < finalBracket))
+                    {
                         //Check if the number was a valid int
-                        if (int.TryParse (line.Substring (initialBracket + 7, finalBracket - (initialBracket + 7)), out speedNum)) {
+                        if (int.TryParse(line.Substring(initialBracket + 7, finalBracket - (initialBracket + 7)), out speedNum))
+                        {
                             //Neat, we definely have a speed with a valid number. Time to keep track of it
-                            RPGTalkSpeed newSpeed = new RPGTalkSpeed ();
+                            RPGTalkSpeed newSpeed = new RPGTalkSpeed();
                             newSpeed.speed = Mathf.Abs(speedNum);
                             //subtract from the speed position any rpgtalk tag that might have come before it
-                            newSpeed.speedPosition = initialBracket - RPGTalkHelper.CountRPGTalkTagCharacters (line.Substring (0, initialBracket));
+                            newSpeed.speedPosition = initialBracket - RPGTalkHelper.CountRPGTalkTagCharacters(line.Substring(0, initialBracket));
                             newSpeed.lineWithSpeed = rpgtalkElements.Count;
-                            speeds.Add (newSpeed);
+                            speeds.Add(newSpeed);
 
                             //Looking good! We found out that a speed should be there and we are already keeping track of it
                             //But now we should remove the [speed=X] from the line.
-                            line = line.Substring (0, initialBracket) +
-                            line.Substring (finalBracket + 1);
+                            line = line.Substring(0, initialBracket) +
+                            line.Substring(finalBracket + 1);
 
 
-                        } else {
-                            Debug.LogWarning ("Found a [speed=x] variable in the text but something is wrong with it. Check The spelling.");
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Found a [speed=x] variable in the text but something is wrong with it. Check The spelling.");
                             thereAreSpeedsLeft = false;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         //it was a closgin [/speed]
-                        RPGTalkSpeed newSpeed = new RPGTalkSpeed ();
+                        RPGTalkSpeed newSpeed = new RPGTalkSpeed();
                         newSpeed.speed = 0;
                         //subtract from the speed position any rpgtalk tag that might have come before it
-                        newSpeed.speedPosition = closingBracket - RPGTalkHelper.CountRPGTalkTagCharacters (line.Substring (0, closingBracket));
+                        newSpeed.speedPosition = closingBracket - RPGTalkHelper.CountRPGTalkTagCharacters(line.Substring(0, closingBracket));
                         newSpeed.lineWithSpeed = rpgtalkElements.Count;
-                        speeds.Add (newSpeed);
+                        speeds.Add(newSpeed);
 
-                        line = line.Substring (0, closingBracket) +
-                            line.Substring (closingBracket + 8);
+                        line = line.Substring(0, closingBracket) +
+                            line.Substring(closingBracket + 8);
                     }
 
-                } else {
+                }
+                else
+                {
                     thereAreSpeedsLeft = false;
                 }
             }
         }
-
         return line;
     }
 
@@ -1026,9 +1150,11 @@ public class RPGTalk : MonoBehaviour {
 
     #region richtext
 
-    private string LookForRichTexts(string line){
+    private string LookForRichTexts(string line)
+    {
         //If you had any sprites added to your line... I'm sorry, you need to enable Rich Text
-        if (spritesUsed.Count > 0) {
+        if (spritesUsed.Count > 0)
+        {
             textUI.ChangeRichText(true);
         }
 
@@ -1038,50 +1164,58 @@ public class RPGTalk : MonoBehaviour {
             bool thereIsRichTextLeft = true;
 
             //repeat for as long as we find a tag
-            while (thereIsRichTextLeft) {
-                int inicialBracket = line.IndexOf ('<');
-                int finalBracket = line.IndexOf ('>');
+            while (thereIsRichTextLeft)
+            {
+                int inicialBracket = line.IndexOf('<');
+                int finalBracket = line.IndexOf('>');
                 //Here comes the tricky part... First check if there are any '<' before a '>'
-                if (inicialBracket < finalBracket) {
+                if (inicialBracket < finalBracket)
+                {
                     //Ok, there is! It should be a tag. But first let's check if it isn't a closing one
                     //This could happen because the text was automatically clipped with word wrap to fit the UI
-                    if (line.Substring (inicialBracket + 1, 1) == "/") {
+                    if (line.Substring(inicialBracket + 1, 1) == "/")
+                    {
                         //Oh! It is a closing tag! Who would say?
                         //If there wasn't some unclosed tags in some other line in this talk, it was just a mistake.
-                        if (unclosedTags.Count == 0) {
+                        if (unclosedTags.Count == 0)
+                        {
                             thereIsRichTextLeft = false;
                         }
                         //Let's check the openned tags in previous lines.
-                        for (int i = unclosedTags.Count-1; i >= 0; i--) {
-                            line = unclosedTags [i] + line;
+                        for (int i = unclosedTags.Count - 1; i >= 0; i--)
+                        {
+                            line = unclosedTags[i] + line;
                         }
                         //After that... Let's reset the unclosed tags, shall we? No infinity loops wanted
                         unclosedTags = new List<string>();
 
                         //Cool, we openned the tags... Let's try this search again
-                        inicialBracket = line.IndexOf ('<');
-                        finalBracket = line.IndexOf ('>');
+                        inicialBracket = line.IndexOf('<');
+                        finalBracket = line.IndexOf('>');
                     }
 
 
                     //Ok, we got an openning tag. Let's found out the name of it
-                    int endOfTag = line.IndexOf (' ', inicialBracket);
+                    int endOfTag = line.IndexOf(' ', inicialBracket);
                     //Let's check if the tag ends (>) before a ' ' is found
-                    if (finalBracket < endOfTag || endOfTag == -1) {
+                    if (finalBracket < endOfTag || endOfTag == -1)
+                    {
                         endOfTag = finalBracket;
                     }
                     //Now let's check if there was an '=' before the '>' or ' '.
-                    int equalSign = line.IndexOf ('=', inicialBracket);
-                    if (equalSign < endOfTag && equalSign != -1) {
+                    int equalSign = line.IndexOf('=', inicialBracket);
+                    if (equalSign < endOfTag && equalSign != -1)
+                    {
                         endOfTag = equalSign;
                     }
 
-                    string tagName = line.Substring (inicialBracket + 1, endOfTag - inicialBracket - 1);
+                    string tagName = line.Substring(inicialBracket + 1, endOfTag - inicialBracket - 1);
                     //Good! We know the tag name. Now let's find its closing point
                     string closedTag = "</" + tagName + '>';
-                    int closedTagLine = line.IndexOf (closedTag, finalBracket);
+                    int closedTagLine = line.IndexOf(closedTag, finalBracket);
 
-                    if(closedTagLine == -1){
+                    if (closedTagLine == -1)
+                    {
                         //Well would you look at that... We found a tag, but not its closing point (</tag>)... What to do?
                         //This could have happened because the text was automatically clipped with word wrap to fit the UI,
                         //Or you just forgot to put a </tag> somewhere...
@@ -1091,7 +1225,7 @@ public class RPGTalk : MonoBehaviour {
                         if (tagName == "sprite")
                         {
                             closedTag = "";
-                            closedTagLine = finalBracket +1;
+                            closedTagLine = finalBracket + 1;
                         }
                         else
                         {
@@ -1108,20 +1242,22 @@ public class RPGTalk : MonoBehaviour {
                     //Let's add it to a list so we can read later on.
                     RPGTalkRichText newRichText = new RPGTalkRichText();
                     newRichText.initialTagPosition = inicialBracket;
-                    newRichText.initialTag = line.Substring (inicialBracket, finalBracket-inicialBracket+1);
+                    newRichText.initialTag = line.Substring(inicialBracket, finalBracket - inicialBracket + 1);
                     newRichText.finalTagPosition = closedTagLine;
                     newRichText.finalTag = closedTag;
                     //Make sure that the the rich text only work for that next line to be added to RpgTalkElements
                     newRichText.lineWithTheRichText = rpgtalkElements.Count;
-                    richText.Add (newRichText);
+                    richText.Add(newRichText);
 
                     //Good! Now finaly, remove it from the original text
-                    string textWithoutRichText = line.Substring (0, inicialBracket);
-                    textWithoutRichText += line.Substring (finalBracket + 1, closedTagLine - finalBracket - 1);
-                    textWithoutRichText += line.Substring (closedTagLine + closedTag.Length);
+                    string textWithoutRichText = line.Substring(0, inicialBracket);
+                    textWithoutRichText += line.Substring(finalBracket + 1, closedTagLine - finalBracket - 1);
+                    textWithoutRichText += line.Substring(closedTagLine + closedTag.Length);
                     line = textWithoutRichText;
 
-                } else {
+                }
+                else
+                {
                     thereIsRichTextLeft = false;
                 }
             }
@@ -1187,27 +1323,27 @@ public class RPGTalk : MonoBehaviour {
 
     Expression IsExpressing(RpgtalkElement element)
     {
-        if(!string.IsNullOrEmpty(element.expression))
+        if (!string.IsNullOrEmpty(element.expression))
         {
-            foreach(RPGTalkCharacterSettings character in characters)
+            foreach (RPGTalkCharacterSettings character in characters)
             {
-                if(character.character.dialoger == element.originalSpeakerName)
+                if (character.character.dialoger == element.originalSpeakerName)
                 {
-                    foreach(Expression expression in character.character.expressions)
+                    foreach (Expression expression in character.character.expressions)
                     {
-                        if(expression.name == element.expression)
+                        if (expression.name == element.expression)
                         {
 
                             //if we have to change a photo, let's change it already
-                            if(shouldUsePhotos && UIPhoto != null)
+                            if (shouldUsePhotos && UIPhoto != null)
                             {
                                 UIPhoto.sprite = expression.photo;
                             }
 
                             //if we have a default audio for this expression, let's play it too
-                            if(expression.audio != null)
+                            if (expression.audio != null)
                             {
-                                if(rpgAudioSorce == null)
+                                if (rpgAudioSorce == null)
                                 {
                                     CreateAudioSource();
                                 }
@@ -1259,7 +1395,7 @@ public class RPGTalk : MonoBehaviour {
                 //Everything fine until now. Now let's check the start and break variables
                 int indexOfStart = line.IndexOf("start=", initialBracket + 8);
                 int endOfStart = line.IndexOf(" ", indexOfStart);
-                if(endOfStart == -1)
+                if (endOfStart == -1)
                 {
                     endOfStart = line.IndexOf("]", indexOfStart);
                 }
@@ -1303,9 +1439,9 @@ public class RPGTalk : MonoBehaviour {
 
 
         }
-       
-            return line;
-       
+
+        return line;
+
     }
 
     #endregion
@@ -1358,7 +1494,7 @@ public class RPGTalk : MonoBehaviour {
 
 
 
-                if (indexOfStart != -1 && indexOfBreak != -1 && endOfBreak != -1 && endOfStart != -1 
+                if (indexOfStart != -1 && indexOfBreak != -1 && endOfBreak != -1 && endOfStart != -1
                 && indexOfSavedData != -1 && endOfSavedData != -1 && indexOfModifier != -1 && endOfModifier != -1)
                 {
                     string newLineToStart = line.Substring(indexOfStart + 6, endOfStart - (indexOfStart + 6));
@@ -1445,7 +1581,7 @@ public class RPGTalk : MonoBehaviour {
                     float jitterNum = 0;
 
                     int finalJitterNum = finalBracket;
-                    if(spaceInJitter != -1 && spaceInJitter < finalBracket)
+                    if (spaceInJitter != -1 && spaceInJitter < finalBracket)
                     {
                         finalJitterNum = spaceInJitter;
                     }
@@ -1464,7 +1600,7 @@ public class RPGTalk : MonoBehaviour {
                         //ok, looking good! Now, we want to check if we have an angle set in this jitter tag.
                         int anglePos = line.IndexOf("angle=", initialBracket);
                         float angle = 1;
-                        if(anglePos != -1)
+                        if (anglePos != -1)
                         {
                             if (float.TryParse(line.Substring(anglePos + 6, finalBracket - (anglePos + 6)), out angle))
                             {
@@ -1476,7 +1612,7 @@ public class RPGTalk : MonoBehaviour {
                                 thereAreJittersLeft = false;
                             }
                         }
-                       
+
 
                         //let's look for the number of characters that should recieve the jitter
                         newJitter.numberOfCharacters = endOfJitter - (finalBracket + 1);
@@ -1488,7 +1624,7 @@ public class RPGTalk : MonoBehaviour {
                         //But now we should remove the [jitter=X] from the line.
                         line = line.Substring(0, initialBracket) +
                         line.Substring(finalBracket + 1, endOfJitter - (finalBracket + 1)) +
-                            line.Substring(endOfJitter+9);
+                            line.Substring(endOfJitter + 9);
 
 
                     }
@@ -1497,7 +1633,7 @@ public class RPGTalk : MonoBehaviour {
                         Debug.LogWarning("Found a [jitter=x] variable in the text but something is wrong with it. Check The spelling.");
                         thereAreJittersLeft = false;
                     }
-                    
+
 
                 }
                 else
@@ -1516,28 +1652,35 @@ public class RPGTalk : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         //We don't want to do nothing if the text isn't even showing
-        if (!textUIObj.activeInHierarchy) {
+        if (!textUIObj.activeInHierarchy)
+        {
             return;
         }
 
 
-        if (textUI!= null && textUI.Enabled() &&
-            currentChar >= rpgtalkElements [cutscenePosition - 1].dialogText.Length) {
+        if (textUI != null && textUI.Enabled() &&
+            currentChar >= rpgtalkElements[cutscenePosition - 1].dialogText.Length)
+        {
             //if we hit the end of the talk, but we should stay on screen, return.
             //but if we have a callback, he can click on it once more.
-            if (cutscenePosition >= rpgtalkElements.Count && shouldStayOnScreen) {
-                if(lookForClick && (
-                    (passWithMouse && Input.GetMouseButtonDown (0)) ||
+            if (cutscenePosition >= rpgtalkElements.Count && shouldStayOnScreen)
+            {
+                if (lookForClick && (
+                    (passWithMouse && Input.GetMouseButtonDown(0)) ||
                     (passWithInputButton != "" && Input.GetButtonDown(passWithInputButton)) || (passWithKey != KeyCode.None && Input.GetKeyDown(passWithKey))
-                )){
+                ))
+                {
                     //if have an audio... playit
-                    if (passAudio != null && !rpgAudioSorce.isPlaying) {
+                    if (passAudio != null && !rpgAudioSorce.isPlaying)
+                    {
                         rpgAudioSorce.clip = passAudio;
-                        rpgAudioSorce.Play ();
+                        rpgAudioSorce.Play();
                     }
-                    if(callback.GetPersistentEventCount() > 0){
+                    if (callback.GetPersistentEventCount() > 0)
+                    {
                         callback.Invoke();
                     }
                     lookForClick = false;
@@ -1554,16 +1697,18 @@ public class RPGTalk : MonoBehaviour {
             //if we reached the end of the line and click on the screen...
             if (
                 enablePass && (
-                (passWithMouse && Input.GetMouseButtonDown (0)) ||
+                (passWithMouse && Input.GetMouseButtonDown(0)) ||
                 (passWithInputButton != "" && Input.GetButtonDown(passWithInputButton)) || (passWithKey != KeyCode.None && Input.GetKeyDown(passWithKey))
 
-            ) ){//if have an audio... playit
-                if (passAudio != null) {
+            ))
+            {//if have an audio... playit
+                if (passAudio != null)
+                {
                     rpgAudioSorce.clip = passAudio;
-                    rpgAudioSorce.Play ();
+                    rpgAudioSorce.Play();
                 }
                 textUI.Enabled(false);
-                PlayNext ();
+                PlayNext();
 
             }
             return;
@@ -1573,50 +1718,55 @@ public class RPGTalk : MonoBehaviour {
 
 
         //if we're currently showing dialog, then start scrolling it
-        if(textUI.Enabled()) {
+        if (textUI.Enabled())
+        {
             // if there's still text left to show
-            if(currentChar < rpgtalkElements[cutscenePosition - 1].dialogText.Length) {
+            if (currentChar < rpgtalkElements[cutscenePosition - 1].dialogText.Length)
+            {
 
                 //ensure that we don't accidentally blow past the end of the string
                 currentChar = Mathf.Min(currentChar + actualTextSpeed * Time.deltaTime,
                     rpgtalkElements[cutscenePosition - 1].dialogText.Length);
 
                 //Do what we have to do if the the text just ended
-                if(currentChar >= rpgtalkElements[cutscenePosition - 1].dialogText.Length){
+                if (currentChar >= rpgtalkElements[cutscenePosition - 1].dialogText.Length)
+                {
                     TextEnded();
                 }
 
                 //Get the current char and the text and put it into the U
-                PutRightTextToShow ();
+                PutRightTextToShow();
 
 
-            } 
-            
-            if(enableQuickSkip == true &&
+            }
+
+            if (enableQuickSkip == true &&
                 (
-                    (passWithMouse && Input.GetMouseButtonDown (0)) ||
+                    (passWithMouse && Input.GetMouseButtonDown(0)) ||
                     (passWithInputButton != "" && Input.GetButtonDown(passWithInputButton)) || (passWithKey != KeyCode.None && Input.GetKeyDown(passWithKey))
-                && currentChar > 3)) {
+                && currentChar > 3))
+            {
 
                 currentChar = rpgtalkElements[cutscenePosition - 1].dialogText.Length;
-                PutRightTextToShow ();
+                PutRightTextToShow();
                 //Do what we have to do if the the text just ended
                 TextEnded();
             }
 
-        
 
 
 
 
-            
+
+
         }
 
 
     }
 
     //The text just ended to be written on the screen
-    void TextEnded(){
+    void TextEnded()
+    {
 
         isAnimating = false;
 
@@ -1633,39 +1783,49 @@ public class RPGTalk : MonoBehaviour {
         }
 
         //if we have an animator.. stop it
-        if (actualAnimator != null) {
-            actualAnimator.SetBool (animatorBooleanName, false);
+        if (actualAnimator != null)
+        {
+            actualAnimator.SetBool(animatorBooleanName, false);
         }
 
         //Check if this text was a question
-        if (questions.Count > 0) {
-            if (choicePrefab == null) {
-                Debug.LogError ("There was a question here, but no object was set in choicePrefab to be the answer");
+        if (questions.Count > 0)
+        {
+            if (choicePrefab == null)
+            {
+                Debug.LogError("There was a question here, but no object was set in choicePrefab to be the answer");
                 return;
             }
 
-            foreach (RPGTalkQuestion q in questions) {
-                if(q.lineWithQuestion == cutscenePosition-1 && !q.alreadyHappen){
+            foreach (RPGTalkQuestion q in questions)
+            {
+                if (q.lineWithQuestion == cutscenePosition - 1 && !q.alreadyHappen)
+                {
                     //This line was a question! Put the correct answers here
                     enablePass = false;
-                        
-                    for (int i = 0; i < q.choices.Count; i++) {
-                        GameObject newChoice = (GameObject)Instantiate (choicePrefab, choicesParent);
+
+                    for (int i = 0; i < q.choices.Count; i++)
+                    {
+                        GameObject newChoice = (GameObject)Instantiate(choicePrefab, choicesParent);
                         Button newChoiceBtn = newChoice.GetComponent<Button>();
-                        if (newChoiceBtn) {
+                        if (newChoiceBtn)
+                        {
                             string thisText = q.choices[i];
                             string correctText = thisText;
                             //make sure we will not want to make it to a new talk
                             correctText = LookForNewTalk(correctText);
 
-                            newChoice.GetComponentInChildren<Text> ().text = correctText;
+                            newChoice.GetComponentInChildren<Text>().text = correctText;
                             int choiceNumber = i;
-                            newChoiceBtn.onClick.AddListener (delegate{MadeAChoice (q.questionID, choiceNumber, thisText);});
-                            if (i == 0) {
-                                StartCoroutine(SelectButton(newChoiceBtn));
+                            newChoiceBtn.onClick.AddListener(delegate { MadeAChoice(q.questionID, choiceNumber, thisText); });
+                            if (i == 0)
+                            {
+                                //StartCoroutine(SelectButton(newChoiceBtn));
                             }
-                        } else {
-                            Debug.LogWarning ("RPGTalk can only put the choice's text correctly if choicePrefab is a button with a child of type Text.");
+                        }
+                        else
+                        {
+                            Debug.LogWarning("RPGTalk can only put the choice's text correctly if choicePrefab is a button with a child of type Text.");
                         }
                     }
                     break;
@@ -1700,9 +1860,12 @@ public class RPGTalk : MonoBehaviour {
     /// Function to be called by the buttons when the user makes a choice.
     /// This passes the talk and call the OnMadeChoice event
     /// </summary>
-    public void MadeAChoice(string questionID, int choiceNumber, string text){
-        foreach (RPGTalkQuestion q in questions) {
-            if (q.questionID == questionID) {
+    public void MadeAChoice(string questionID, int choiceNumber, string text)
+    {
+        foreach (RPGTalkQuestion q in questions)
+        {
+            if (q.questionID == questionID)
+            {
                 q.alreadyHappen = true;
                 LookForNewTalk(text);
                 break;
@@ -1712,13 +1875,15 @@ public class RPGTalk : MonoBehaviour {
 
         StartCoroutine(ReenableSkip(enableQuickSkip));
 
-        PlayNext ();
-        if (OnMadeChoice != null) {
-            OnMadeChoice (questionID, choiceNumber);
+        PlayNext();
+        if (OnMadeChoice != null)
+        {
+            OnMadeChoice(questionID, choiceNumber);
         }
         //delete all the buttons (and other childs) in the buttons parent
-        foreach (Transform child in choicesParent) {
-            Destroy (child.gameObject);
+        foreach (Transform child in choicesParent)
+        {
+            Destroy(child.gameObject);
         }
     }
 
@@ -1727,22 +1892,26 @@ public class RPGTalk : MonoBehaviour {
     /// <summary>
     /// Given the current character, look for variables or rich text and put everything in the textUI.
     /// </summary>
-    public void PutRightTextToShow(){
+    public void PutRightTextToShow()
+    {
         //ensure that we don't accidentally blow past the end of the string
         currentChar = Mathf.Min(currentChar, rpgtalkElements[cutscenePosition - 1].dialogText.Length);
 
         //Did we reach the point where a speed should be changed?
-        for (int i = 0; i < speeds.Count; i++) {
-            if (speeds [i].speedPosition <= currentChar && !speeds [i].alreadyGone && speeds [i].lineWithSpeed == cutscenePosition - 1) {
+        for (int i = 0; i < speeds.Count; i++)
+        {
+            if (speeds[i].speedPosition <= currentChar && !speeds[i].alreadyGone && speeds[i].lineWithSpeed == cutscenePosition - 1)
+            {
                 //Change the actual speed of the text. if it is 0 or below, change back to the default
-                actualTextSpeed = speeds [i].speed;
-                if (actualTextSpeed <= 0) {
+                actualTextSpeed = speeds[i].speed;
+                if (actualTextSpeed <= 0)
+                {
                     actualTextSpeed = textSpeed;
                 }
-                speeds [i].alreadyGone = true;
+                speeds[i].alreadyGone = true;
 
                 //Change currentChar to the position of the [speed] tag so no word gets jumped
-                currentChar = speeds [i].speedPosition;
+                currentChar = speeds[i].speedPosition;
 
 
             }
@@ -1779,28 +1948,33 @@ public class RPGTalk : MonoBehaviour {
 
         //Check if there should be any rich text text beggining or ending at this position
         //Check from the bottom, because a tag might have been openned inside another
-        for (int i = richText.Count-1; i >= 0; i--) {
-            if (richText[i].lineWithTheRichText != cutscenePosition - 1 || currentChar < richText [i].initialTagPosition) {
+        for (int i = richText.Count - 1; i >= 0; i--)
+        {
+            if (richText[i].lineWithTheRichText != cutscenePosition - 1 || currentChar < richText[i].initialTagPosition)
+            {
                 continue;
             }
             string beforeTextToDisplay = textToDisplay;
-            textToDisplay = textToDisplay.Substring (0,richText [i].initialTagPosition);
-            textToDisplay += richText [i].initialTag;
+            textToDisplay = textToDisplay.Substring(0, richText[i].initialTagPosition);
+            textToDisplay += richText[i].initialTag;
 
-            if (currentChar + richText [i].initialTag.Length >= richText [i].finalTagPosition) {
-                textToDisplay += beforeTextToDisplay.Substring (richText [i].initialTagPosition, 
-                    richText [i].finalTagPosition-richText [i].initialTagPosition-richText [i].initialTag.Length);
-                textToDisplay += richText [i].finalTag;
-                textToDisplay += beforeTextToDisplay.Substring (richText[i].finalTagPosition - richText[i].initialTag.Length);
-            } else {
-                textToDisplay += beforeTextToDisplay.Substring(richText [i].initialTagPosition); 
-                textToDisplay += richText [i].finalTag;
+            if (currentChar + richText[i].initialTag.Length >= richText[i].finalTagPosition)
+            {
+                textToDisplay += beforeTextToDisplay.Substring(richText[i].initialTagPosition,
+                    richText[i].finalTagPosition - richText[i].initialTagPosition - richText[i].initialTag.Length);
+                textToDisplay += richText[i].finalTag;
+                textToDisplay += beforeTextToDisplay.Substring(richText[i].finalTagPosition - richText[i].initialTag.Length);
+            }
+            else
+            {
+                textToDisplay += beforeTextToDisplay.Substring(richText[i].initialTagPosition);
+                textToDisplay += richText[i].finalTag;
             }
 
         }
 
 
-        textToDisplay = textToDisplay.Replace("\\n","\n");
+        textToDisplay = textToDisplay.Replace("\\n", "\n");
 
 
         //if have an audio... playit
@@ -1823,18 +1997,23 @@ public class RPGTalk : MonoBehaviour {
         int RichTextUntilNow = RPGTalkHelper.CountRichTextCharacters(textToDisplay);
 
         //Did we reach the point where an image should be shown?
-        for (int i = 0; i < spritesUsed.Count; i++) {
-            if (spritesUsed [i].spritePosition <= currentChar + RichTextUntilNow && !spritesUsed [i].alreadyInPlace && spritesUsed[i].lineWithSprite == cutscenePosition - 1) {
-                spritesUsed [i].alreadyInPlace = textUIObj.GetComponent<ITextWithIcon> ().FitImagesOnText (i);
+        for (int i = 0; i < spritesUsed.Count; i++)
+        {
+            if (spritesUsed[i].spritePosition <= currentChar + RichTextUntilNow && !spritesUsed[i].alreadyInPlace && spritesUsed[i].lineWithSprite == cutscenePosition - 1)
+            {
+                spritesUsed[i].alreadyInPlace = textUIObj.GetComponent<ITextWithIcon>().FitImagesOnText(i);
             }
         }
 
 
         //check again, at the end of the text, if there should be any images on it
-        if (currentChar >= rpgtalkElements [cutscenePosition - 1].dialogText.Length) {
-            for (int i = 0; i < spritesUsed.Count; i++) {
-                if (spritesUsed[i].lineWithSprite == cutscenePosition - 1 && !spritesUsed[i].alreadyInPlace) {
-                    StartCoroutine (TryToPutImageOnText (i));
+        if (currentChar >= rpgtalkElements[cutscenePosition - 1].dialogText.Length)
+        {
+            for (int i = 0; i < spritesUsed.Count; i++)
+            {
+                if (spritesUsed[i].lineWithSprite == cutscenePosition - 1 && !spritesUsed[i].alreadyInPlace)
+                {
+                    StartCoroutine(TryToPutImageOnText(i));
                 }
             }
         }
@@ -1842,45 +2021,54 @@ public class RPGTalk : MonoBehaviour {
 
     }
 
-    void CheckIfTheTextFits(string line){
-
+    void CheckIfTheTextFits(string line)
+    {
         int maxCharsOnUI = maxCharInWidth * maxCharInHeight;
-        if (line.Length > maxCharsOnUI) {
+        if (line.Length > maxCharsOnUI)
+        {
 
             //how many talks would be necessary to fit this text?
             int howMuchMore = Mathf.CeilToInt((float)line.Length / (float)maxCharsOnUI);
             string newLine = "";
             int cuttedInSpace = -1;
 
-            for (int i = 0; i < howMuchMore; i++) {
+            for (int i = 0; i < howMuchMore; i++)
+            {
                 //get the characeter that we should start saying
                 int startChar = i * maxCharsOnUI;
-                if(cuttedInSpace != -1){
+                if (cuttedInSpace != -1)
+                {
                     startChar = cuttedInSpace;
                     cuttedInSpace = -1;
                 }
 
 
                 //if the new line fits the talk...
-                if (line.Substring (startChar, 
-                    line.Length - (startChar)).Length < maxCharsOnUI) {
-                    newLine = line.Substring (startChar, 
+                if (line.Substring(startChar,
+                    line.Length - (startChar)).Length < maxCharsOnUI)
+                {
+                    newLine = line.Substring(startChar,
                         line.Length - (startChar));
-                } else {
+                }
+                else
+                {
                     //if it not, search for spaces near to the last word and cut it
-                    cuttedInSpace = line.IndexOf (" ", startChar+ (maxCharsOnUI - 20));
-                    if(cuttedInSpace != -1){
-                        newLine = line.Substring (startChar, cuttedInSpace-startChar);
-                    }else{
-                        newLine = line.Substring (startChar, maxCharsOnUI);
+                    cuttedInSpace = line.IndexOf(" ", startChar + (maxCharsOnUI - 20));
+                    if (cuttedInSpace != -1)
+                    {
+                        newLine = line.Substring(startChar, cuttedInSpace - startChar);
+                    }
+                    else
+                    {
+                        newLine = line.Substring(startChar, maxCharsOnUI);
                     }
                 }
-
-                rpgtalkElements.Add (readSceneElement (newLine));
+                rpgtalkElements.Add(readSceneElement(newLine));
             }
-        } else {
-
-            rpgtalkElements.Add (readSceneElement (line));
+        }
+        else
+        {
+            rpgtalkElements.Add(readSceneElement(line));
         }
     }
 
@@ -1889,25 +2077,31 @@ public class RPGTalk : MonoBehaviour {
     /// Finish the talk, skipping every dialog. The callback function will still going to be called
     /// </summary>
     /// <param name="jumpQuestions">If set to <c>true</c> goes to the end of the talk, even if there were questions between it</param>
-    public void EndTalk(bool jumpQuestions = false) {
-        if (textUIObj && textUIObj.activeInHierarchy) {
+    public void EndTalk(bool jumpQuestions = false)
+    {
+        if (textUIObj && textUIObj.activeInHierarchy)
+        {
             cutscenePosition = rpgtalkElements.Count - 1;
-            if (!shouldStayOnScreen) {
-                CleanDirtySprites ();
+            if (!shouldStayOnScreen)
+            {
+                CleanDirtySprites();
                 cutscenePosition = rpgtalkElements.Count;
             }
 
-            if(!jumpQuestions){
+            if (!jumpQuestions)
+            {
                 //Look for questions that hasn't already happen
-                foreach(RPGTalkQuestion q in questions){
-                    if (!q.alreadyHappen) {
+                foreach (RPGTalkQuestion q in questions)
+                {
+                    if (!q.alreadyHappen)
+                    {
                         cutscenePosition = q.lineWithQuestion;
                         break;
                     }
                 }
             }
 
-            PlayNext (true);
+            PlayNext(true);
         }
     }
 
@@ -1917,8 +2111,10 @@ public class RPGTalk : MonoBehaviour {
     /// Plays the next dialog in the current Talk.
     /// </summary>
     /// <param name="forcePlay">If set to <c>true</c> play the next talk in line even if "enablePass" is false.</param>
-    public void PlayNext(bool forcePlay = false) {
-        if (!enablePass && !forcePlay) {
+    public void PlayNext(bool forcePlay = false)
+    {
+        if (!enablePass && !forcePlay)
+        {
             return;
         }
 
@@ -1933,8 +2129,9 @@ public class RPGTalk : MonoBehaviour {
 
 
         //call the event
-        if (OnPlayNext != null){
-            OnPlayNext ();
+        if (OnPlayNext != null)
+        {
+            OnPlayNext();
         }
 
         //If we had auto pass, cancel it
@@ -1944,12 +2141,13 @@ public class RPGTalk : MonoBehaviour {
         }
 
         //stop any dubs
-        if (dubSounds != null) {
-            dubSounds.StopCurrentDub ();
+        if (dubSounds != null)
+        {
+            dubSounds.StopCurrentDub();
         }
 
         //Let's set to false any expression left
-        if(actualAnimator != null)
+        if (actualAnimator != null)
         {
             if (expressing != null && !string.IsNullOrEmpty(expressing.boolInAnimator))
             {
@@ -1973,29 +2171,38 @@ public class RPGTalk : MonoBehaviour {
         currentChar = 0;
 
         //if there was any sprite in the text, deactivate it
-        if (spritesUsed.Count > 0) {
-            foreach (Transform child in textUIObj.transform) {
-                child.gameObject.SetActive (false);
+        if (spritesUsed.Count > 0)
+        {
+            foreach (Transform child in textUIObj.transform)
+            {
+                child.gameObject.SetActive(false);
             }
         }
 
-        if(cutscenePosition <= rpgtalkElements.Count) {
+        if (cutscenePosition <= rpgtalkElements.Count)
+        {
 
             textUI.Enabled(true);
-            
+
             RpgtalkElement currentRpgtalkElement = rpgtalkElements[cutscenePosition - 1];
 
-            if (dialoger) {
-                if (dialogerObj) {
+            if (dialoger)
+            {
+                if (dialogerObj)
+                {
                     dialogerUI.Enabled(true);
 
                     dialogerUI.ChangeTextTo(currentRpgtalkElement.speakerName);
                 }
-                if (shouldUsePhotos) {
-                    for (int i = 0; i < characters.Length; i++) {
-                        if (characters [i].character.dialoger == currentRpgtalkElement.originalSpeakerName) {
-                            if (UIPhoto) {
-                                UIPhoto.sprite = characters [i].character.photo;
+                if (shouldUsePhotos)
+                {
+                    for (int i = 0; i < characters.Length; i++)
+                    {
+                        if (characters[i].character.dialoger == currentRpgtalkElement.originalSpeakerName)
+                        {
+                            if (UIPhoto)
+                            {
+                                UIPhoto.sprite = characters[i].character.photo;
                             }
                             //Change its animator
                             if (characters[i].animatorOverwrite != null)
@@ -2006,8 +2213,9 @@ public class RPGTalk : MonoBehaviour {
                             {
                                 actualAnimator = animatorWhenTalking;
                             }
-                            if (actualAnimator && animatorIntName != ""){
-                                actualAnimator.SetInteger (animatorIntName, i);
+                            if (actualAnimator && animatorIntName != "")
+                            {
+                                actualAnimator.SetInteger(animatorIntName, i);
 
                             }
                             break;
@@ -2016,8 +2224,17 @@ public class RPGTalk : MonoBehaviour {
                 }
             }
 
-            CheckWhoToFollow (currentRpgtalkElement);
+            CheckWhoToFollow(currentRpgtalkElement);
 
+            string myLine = rpgtalkElements[cutscenePosition - 1].dialogText;
+            for (int j = 0; j < variables.Length; j++)
+            {
+                if (myLine.Contains(variables[j].variableName))
+                {
+                    myLine = myLine.Replace(variables[j].variableName, variables[j].variableValue);
+                }
+            }
+            rpgtalkElements[cutscenePosition - 1].dialogText = myLine;
 
             //check if there should be any dubs in this line
             CheckDubsInThisLine();
@@ -2030,9 +2247,9 @@ public class RPGTalk : MonoBehaviour {
 
             //check if after this line we should start another talk
             currentRpgtalkElement.dialogText = LookForNewTalk(currentRpgtalkElement.dialogText);
-
-
-        } else {
+        }
+        else
+        {
             //The talk has finished
 
 
@@ -2045,9 +2262,9 @@ public class RPGTalk : MonoBehaviour {
             }
 
             //check if we are saved something that should take me to another talk
-            foreach(RPGtalkSaveStatement saved in saves)
+            foreach (RPGtalkSaveStatement saved in saves)
             {
-                if(saveInstance != null)
+                if (saveInstance != null)
                 {
                     if (saveInstance.GetSavedData(saved.savedData, saved.modifier))
                     {
@@ -2064,26 +2281,33 @@ public class RPGTalk : MonoBehaviour {
 
 
             //call the event
-            if (OnEndTalk != null){
-                OnEndTalk ();
+            if (OnEndTalk != null)
+            {
+                OnEndTalk();
             }
 
 
             StartCoroutine(GoBackIsPlaying());
 
-            if (!shouldStayOnScreen) {
+            if (!shouldStayOnScreen)
+            {
                 textUI.Enabled(false);
-                if (dialoger) {
-                    if (dialogerObj) {
+                if (dialoger)
+                {
+                    if (dialogerObj)
+                    {
                         dialogerUI.Enabled(false);
                     }
                 }
-                for (int i = 0; i < showWithDialog.Length; i++) {
-                    showWithDialog [i].SetActive (false);
+                for (int i = 0; i < showWithDialog.Length; i++)
+                {
+                    showWithDialog[i].SetActive(false);
                 }
             }
-
-            callback.Invoke();
+            if (callback != null)
+            {
+                callback.Invoke();
+            }
 
 
             //if we want to go back to the original talk lines
@@ -2097,7 +2321,7 @@ public class RPGTalk : MonoBehaviour {
 
         }
 
-        
+
     }
 
     //Wait a frame to make the isPlaying false, so we try not to play a area and pass a talk at the same time
@@ -2123,16 +2347,20 @@ public class RPGTalk : MonoBehaviour {
 
 
 
-    void CheckWhoToFollow(RpgtalkElement element){
+    void CheckWhoToFollow(RpgtalkElement element)
+    {
         //Set it to follow someone
         //resets anyone that is being followed
         following = null;
         followingOffset = Vector3.zero;
-        if (shouldFollow && characters.Length > 0) {
-            foreach (RPGTalkCharacterSettings character in characters) {
+        if (shouldFollow && characters.Length > 0)
+        {
+            foreach (RPGTalkCharacterSettings character in characters)
+            {
                 //if the character in the follow array have the same name as the talker or an empty name, follow it!
-                if(character.character.dialoger == element.speakerName ||
-                    character.character.dialoger == ""){
+                if (character.character.dialoger == element.speakerName ||
+                    character.character.dialoger == "")
+                {
                     following = character.follow;
                     followingOffset = character.followOffset;
                 }
