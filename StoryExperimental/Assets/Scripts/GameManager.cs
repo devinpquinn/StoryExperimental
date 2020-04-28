@@ -5,6 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public RPGTalk myTalk;
+    public GameObject[] backgrounds;
+    private int bgIndex = 0;
+    [Range(0, 1)]
+    public float rainfall;
 
     private void Start()
     {
@@ -15,6 +19,12 @@ public class GameManager : MonoBehaviour
     {
         //Debug.Log(myTalk.cutscenePosition);
         //Debug.Log(myTalk.rpgtalkElements[myTalk.cutscenePosition - 1].dialogText);
+    }
+
+    public void ChangeBackground()
+    {
+        backgrounds[bgIndex].GetComponent<Animator>().Play("bgFade");
+        bgIndex++;
     }
 
     private void OnMadeChoice(string questionID, int choiceNumber)
