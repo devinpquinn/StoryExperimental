@@ -1,6 +1,22 @@
-This is placeholder text.
-[question=0]Are you ready for a placeholder question?
-[choice]This is a placeholder choice.
-[choice]This is another placeholder choice.
-[choice]A third placeholder choice.
-You chose ChoiceDependent.
+Even before you've crossed the border into Frost Reach, you can feel the chill. It sweeps down from the distant mountains to greet you, carrying with it a hissing wind that plucks at your scarf to allow the frigid drizzle its malevolent egress. Some primal recess of your brain urges you to turn around before it's too late. This is the point of no return.
+[question=border]You hitch up your travelling bag as you approach the border checkpoint. It is a small, cozy cabin-type structure with a slanted roof much in need of repair, groaning under a heavy snowdrift. Lantern light flickers in the windows, and smoke curls from a crooked chimney.
+[choice]Approach the checkpoint.
+As you near the building, two guardsmen step out and signal you to halt. They wear dark grey uniform jackets with broad leather belts and arming swords. One of them-- taller, and with red shoulder patches denoting a sergeant's rank-- hails you.
+"Hold, traveler. Got some procedures to follow, 'n we'll get you through quick-like."
+You nod your assent and place your satchel on the ground. The shorter guard hoists it onto a small table and begins wrestling with the buckles, swearing under his breath, while the sergeant steps closer to squint at you.
+[question=from]"Where've you come from?" he asks, assessing your traveling garb with an appraising eye.
+[choice]Eld Ombyr.
+[choice]Warm Front.
+[choice]Ghyde Light.
+ChoiceDependent
+The shorter guard finishes his cursory inspection of the contents of your bag and returns it to you. "Got any weapons on your person?" he inquires.
+"No," you respond truthfully.
+The guard presses on. "Are you in possession of any magickal artefacts or substances?"
+"No," you lie.
+[question=boilsCheck]"Right, then," the sergeant says. "If you could remove your hood and scarf, please. Boils check. I understand you're probably freezing already, southerner, so we'll make this quick, just a precaution. Can't have any flaks staggering over the border, now can we?"
+[choice]There's no need for that.
+"That won't be necessary," you say quickly, reaching inside your coat and producing your grandfather's letter. You hold it out in clear view of the sergeant.
+"I'm afraid it's not--" The sergeant's disapproving frown fades to slack-jawed disbelief as he catches sight of the red wax seal on the letter. More particularly, the insignia it bears: the image of a skull with a keyhole in the center of its forehead.
+The other guard looks on in confusion."What is it, sir?"
+[question=inOrder]"Nothing, nothing." The sergeant shooes the letter back inside your pocket as if it's coated with the Bloody Boils itself. "Everything's in order. Go on through, traveller, and welcome to Frost Reach."
+[choice]Cross the border and proceed north.
