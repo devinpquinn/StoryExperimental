@@ -10,10 +10,14 @@ public class GameManager : MonoBehaviour
     [Range(0, 1)]
     public float rainfall;
     private List<string> keywords;
+    public AudioSource musicPlayer;
+    public AudioClip[] musics;
+    private int musicIndex = 0;
 
     private void Start()
     {
         myTalk.OnMadeChoice += OnMadeChoice;
+        myTalk.OnPlayNext += OnPlayNext;
         keywords = new List<string>();
     }
 
@@ -23,10 +27,39 @@ public class GameManager : MonoBehaviour
         //Debug.Log(myTalk.rpgtalkElements[myTalk.cutscenePosition - 1].dialogText);
     }
 
+    private void ChangeMusic()
+    {
+        musicPlayer.clip = musics[musicIndex];
+        musicPlayer.Play();
+        musicIndex++;
+    }
+
+    IEnumerator MusicSwitch()
+    {
+        musicPlayer.GetComponent<Animator>().Play("audioFade");
+        yield return new WaitForSeconds(1);
+        ChangeMusic();
+    }
+
     public void ChangeBackground()
     {
         backgrounds[bgIndex].GetComponent<Animator>().Play("bgFade");
         bgIndex++;
+    }
+
+    private void OnPlayNext()
+    {
+        switch(myTalk.cutscenePosition)
+        {
+            case 16:
+                ChangeBackground();
+                break;
+            case 17:
+                rainfall = 0;
+                ChangeBackground();
+                ChangeMusic();
+                break;
+        }
     }
 
     private void OnMadeChoice(string questionID, int choiceNumber)
