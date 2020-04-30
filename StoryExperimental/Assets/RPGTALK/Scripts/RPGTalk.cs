@@ -365,7 +365,7 @@ public class RPGTalk : MonoBehaviour
         saveInstance = GetComponent<RPGTalkSaveInstance>();
     }
 
-    public void VariableReplace(string oldValue, string newValue)
+    public void VariableReplace(string oldValue, string newValue, int varNum)
     {
         string myLine;
 
@@ -381,6 +381,7 @@ public class RPGTalk : MonoBehaviour
             }
             rpgtalkElements[i].dialogText = myLine;
         }
+        variables[varNum].variableValue = newValue;
     }
     
     //Change txtToParse to be the correct for other language

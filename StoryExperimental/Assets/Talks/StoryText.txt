@@ -23,3 +23,12 @@ The other guard looks on in confusion."What is it, sir?"
 Past the checkpoint, you proceed on foot to the small town where you are to rendezvous with your guide. Even in a village such as this, the architecture is already distinctive from the south; each building's roof is slanted at acute angles to minimalize snow accumulation. Most lodgings are quite small, claustrophobic even, to conserve the furnace-heat.
 Wiping the sleet from your face, you duck inside the travelers' hostel and look around. The place is nearly empty, and to your relief you are able to locate your guide almost immediately. He is wearing a bright red scarf, as instructed. Catching his attention with an awkward wave, you pull up a rickety chair and seat yourself at the small table where he nurses a steaming mug.
 The man introduces himself as Vogel, and as he pulls down his scarf to talk you get a good look at him. He is nt exactly a handsome fellow-- hooded eyes, beer-stained beard, bushy brows nearing collision, and a grimace full of rotten teeth. His nose and ears have been badly scarred by frostbite. He is fairly young-- late twenties, early thirties-- but a hard life has worn on him.
+"Show me," he croaks hoarsely.
+You produce the letter once again. Vogel reaches for it, and out of reflex you pull it back. Noting your caution, Vogel scoffs sardonically.
+"Whatever Assemblyman Eisenbrand wants with you, I don't know and I don't want to know," he says. It's always strange to hear your grandfather referred to by his title. You sheepishly tilt the letter so Vogel can see the red wax seal and the skull.
+[question=gender]Vogel nods, satisfied. "All I need. You're just a package, friend. Hells, you're so bundled up I couldn't say whether you're man, woman, or flak."
+[choice]I'm a man.
+[choice]I'm a woman.
+[choice]It doesn't matter.
+"Hrm." The guide takes a swig of his pungent drink, setting it down with a decisive <i>clunk</i> and a growling belch. ChoiceDependent
+Vogel unfolds a small, faded map onto the tabletop. "Here's how this is going to work. A few hours north of here is Fimbulstadt. That's the nearest station we can catch the Chain. From there we'll take the line straight through to Northstar, and then all the way up to Utgard." He coughs wetly. "That's as far as the Chain'll take us. Final leg is overland to <i>you-know-where</i>."
