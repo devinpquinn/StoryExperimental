@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public RPGTalk myTalk;
     public GameObject[] backgrounds;
+    public StressReceiver sr;
     private int bgIndex = 0;
     [Range(0, 1)]
     public float rainfall;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
         myTalk.OnMadeChoice += OnMadeChoice;
         myTalk.OnPlayNext += OnPlayNext;
         keywords = new List<string>();
+        sr.enabled = false;
     }
 
     private void Update()
@@ -71,6 +73,14 @@ public class GameManager : MonoBehaviour
                 rainfall = 0.4f;
                 ChangeBackground();
                 StartCoroutine("MusicFadeOut");
+                break;
+            case 27:
+                ChangeBackground();
+                break;
+            case 29:
+                ChangeBackground();
+                rainfall = 0.85f;
+                sr.enabled = true;
                 break;
         }
     }
@@ -128,6 +138,20 @@ public class GameManager : MonoBehaviour
                     myTalk.VariableReplace(myTalk.variables[0].variableValue, responded, 0);
                     keywords.Add("genderOther");
                     break;
+                }
+                break;
+            case "waiting":
+                if(keywords.Contains("genderMale"))
+                {
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, "sir", 0);
+                }
+                else if (keywords.Contains("genderFemale"))
+                {
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, "miss", 0);
+                }
+                else if (keywords.Contains("genderOther"))
+                {
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, "pal", 0);
                 }
                 break;
         }
