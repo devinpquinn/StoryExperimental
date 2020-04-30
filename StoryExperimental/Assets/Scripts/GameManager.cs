@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     private void ChangeMusic()
     {
         musicPlayer.clip = musics[musicIndex];
+        musicPlayer.mute = false;
         musicPlayer.Play();
         musicIndex++;
     }
@@ -39,6 +40,13 @@ public class GameManager : MonoBehaviour
         musicPlayer.GetComponent<Animator>().Play("audioFade");
         yield return new WaitForSeconds(1);
         ChangeMusic();
+    }
+
+    IEnumerator MusicFadeOut()
+    {
+        musicPlayer.GetComponent<Animator>().Play("audioFade");
+        yield return new WaitForSeconds(1);
+        musicPlayer.Stop();
     }
 
     public void ChangeBackground()
@@ -58,6 +66,11 @@ public class GameManager : MonoBehaviour
                 rainfall = 0;
                 ChangeBackground();
                 ChangeMusic();
+                break;
+            case 26:
+                rainfall = 0.4f;
+                ChangeBackground();
+                StartCoroutine("MusicFadeOut");
                 break;
         }
     }
