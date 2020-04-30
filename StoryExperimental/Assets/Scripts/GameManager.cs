@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public AudioSource musicPlayer;
     public AudioClip[] musics;
     private int musicIndex = 0;
+    private AudioSource fxSource;
+    public AudioClip[] soundFX;
 
     private void Start()
     {
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour
         myTalk.OnPlayNext += OnPlayNext;
         keywords = new List<string>();
         sr.enabled = false;
+        fxSource = Camera.main.GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -78,9 +81,15 @@ public class GameManager : MonoBehaviour
                 ChangeBackground();
                 break;
             case 29:
-                ChangeBackground();
                 rainfall = 0.85f;
                 sr.enabled = true;
+                break;
+            case 30:
+                ChangeBackground();
+                ChangeMusic();
+                break;
+            case 31:
+                fxSource.PlayOneShot(soundFX[0]);
                 break;
         }
     }
