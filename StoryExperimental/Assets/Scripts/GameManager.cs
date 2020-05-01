@@ -57,6 +57,10 @@ public class GameManager : MonoBehaviour
     public void ChangeBackground()
     {
         backgrounds[bgIndex].GetComponent<Animator>().Play("bgFade");
+        if(bgIndex == 8)
+        {
+            backgrounds[bgIndex + 1].GetComponent<Animator>().Play("bgZoomOut");
+        }
         bgIndex++;
     }
 
@@ -90,6 +94,32 @@ public class GameManager : MonoBehaviour
                 break;
             case 31:
                 fxSource.PlayOneShot(soundFX[0]);
+                break;
+            case 32:
+                ChangeBackground();
+                StartCoroutine("MusicFadeOut");
+                rainfall = 0.3f;
+                sr.enabled = false;
+                if (keywords.Contains("fromEldOmbyr"))
+                {
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, "Eld Ombyr", 0);
+                }
+                else if (keywords.Contains("fromWarmFront"))
+                {
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, "Warm Front", 0);
+                }
+                else if (keywords.Contains("fromGhydeLight"))
+                {
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, "GhydeLight", 0);
+                }
+                break;
+            case 35:
+                ChangeBackground();
+                rainfall = 0f;
+                break;
+            case 40:
+                ChangeBackground();
+                rainfall = 0.3f;
                 break;
         }
     }
@@ -162,6 +192,33 @@ public class GameManager : MonoBehaviour
                 {
                     myTalk.VariableReplace(myTalk.variables[0].variableValue, "pal", 0);
                 }
+                break;
+            case "seen":
+                string response1;
+                if (keywords.Contains("fromEldOmbyr"))
+                {
+                    response1 = "\"The pipelines of Formium are an engineering marvel in their own right";
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, response1, 0);
+                    keywords.Add("genderMale");
+                    break;
+                }
+                else if (keywords.Contains("fromWarmFront"))
+                {
+                    response1 = "\"Once you've seen golems striding knee-deep along the Shore, parting thirty-foot waves with their passage, you'll think you've seen all the wonders Telluria has to offer";
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, response1, 0);
+                    keywords.Add("genderFemale");
+                    break;
+                }
+                else if (keywords.Contains("fromGhydeLight"))
+                {
+                    response1 = "\"I've stood under the sweep of the Dome, felt the firmament itself at my fingertips";
+                    myTalk.VariableReplace(myTalk.variables[0].variableValue, response1, 0);
+                    keywords.Add("genderOther");
+                    break;
+                }
+                break;
+            case "boils":
+                ChangeMusic();
                 break;
         }
     }

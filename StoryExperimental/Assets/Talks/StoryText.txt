@@ -36,8 +36,22 @@ You ask him a few more questions about the logistics and timetable of the journe
 Fimbulstadt is more impressive than the border town, but not by much. The roads are well-cobbled, at least, and you pass several workers shoveling snow to keep the lanes clear. Northerners are certainly a hardy people, you observe. When you catch a few townsfolk squinting suspiciously at you, you are reminded that they are generally distrustful of outsiders as well.
 [question=waiting]The Chain cuts straight through the center of town, with a hundred feet cleared on either side. You and Vogel find shelter under the overhang of the station; a protective barrier obscures the view of the tracks, save for a few narrow viewing slits.
 [choice]Why is there all this protection?
-[choice]Why are we so far from the tracks?
+[choice]Why is there so much space around the tracks?
 Vogel chuckles. "You'll see in just a minute, ChoiceDependent."
 He has barely finished speaking when you feel the ground begin to thrum with a faint vibration beneath your feet. The few other passengers waiting at the station notice it too, and shuffle with anticipation. Second by second the tremors grow stronger, ascend from a sensation to a sound until it is a roaring in your ears.
 A faint orange light begins to glow through the viewing slits. You hurry forward to one of the apertures just in time for a wall of flames to fill your vision. The engine has arrived.
 You watch in awe and disbelief as the mighty locomotive thunders into view. A hundred-meter tongue of fire precedes it, belched by mounted flamecasters, and the slopes of its ironclad flanks throw a wake of discarded snow to either side. The flying slush drums heavily against the station's protective barrier as the mighty engine applies its brakes with a screech and eases to a stop.
+The now-stationary locomotive is a sight to behold even with the flamecasters switched off. Its length is impossible to gauge; armored cars trail off into the distance until the line disappears into the frigid mists. It is a massive, hulking, ungainly beast, ugly with its slopes and spikes, but you can feel its looming presence like a tremor in your very bones.
+[question=seen]You marvel at the massive bulk of this glorious machine; it seems impossible that Reavian steam could be enough to power dozens of locomotives such as this. Taking note of your wide-eyed wonderment, Vogel doesn't pass up the opportunity to gloat. "Nothing quite like this in ChoiceDependent, eh?"
+[choice]No, nothing quite like this.
+"No," you admit wistfully. ChoiceDependent. But I can't say that I've seen something quite as... something quite like this."
+Presenting your papers to the sour-faced conductor, you and Vogel board one of the surprisingly well-appointed passenger cars and secure a narrow but surprisingly warm cabin with sturdy beds recessed into opposite walls. The passage to North Star will take two days, with one night on board.
+[question=boils]Vogel stows his belongings and steps out, muttering something about finding an open-air car to smoke in. Sounds like a chilly proposition, but his departure leaves with the space you need to check something.
+[choice]Roll up your sleeve.
+After a quick glance up and down the railcar, you close the door to your cabin and peel back the thick sleeve of your jacket with some effort. Sure enough, the angry red boils have spread past your elbow and have begun to creep down your forearm. Some of the smaller pustules are now a crusty black; ashy flakes stick to your rolled-up sleeve or drift down to the cabin floor.
+Resisting the urge to scratch, you hurriedly conceal the bloody boils once again and sweep up any particulate evidence. One night to Northstar, two nights to Utgard, one more night in the mountains before reaching your destination. It's going to be close.
+Letting a hand drift to your amulet (a simple triangle of pearly metal, no larger than a thumbnail), you close your eyes and whisper a brief prayer to Merenia. A wave of magickal peace creeps across your body from head to toe; you steadfastly visualize this energy pushing back against the affliction's spread. It will buy you hours more, at most.
+The Chain rumbles to life, and you recline with a troubled sigh as the station and Fimbulstadt slowly wind out of view. Five days, four nights. Plumes of parted snow cloud your vision from the window, limned with flamecasters' light. You can do this. You can make it.
+Five days, four nights.
+<i>Five days, four nights.</i>
+The Camarilla await.
