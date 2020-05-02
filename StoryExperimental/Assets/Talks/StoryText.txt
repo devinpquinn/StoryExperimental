@@ -54,4 +54,4 @@ Letting a hand drift to your amulet (a simple triangle of pearly metal, no large
 The Chain rumbles to life, and you recline with a troubled sigh as the station and Fimbulstadt slowly wind out of view. Five days, four nights. Plumes of parted snow cloud your vision from the window, limned with flamecasters' light. You can do this. You can make it.
 Five days, four nights.
 <i>Five days, four nights.</i>
-The Camarilla await.
+<b>The Camarilla await.</b>
